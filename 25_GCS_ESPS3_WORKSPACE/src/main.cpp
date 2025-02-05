@@ -1,5 +1,4 @@
 #include <Arduino.h>
-#include <ESP32Servo.h>
 #include <servo_ctrl.h>
 #include <serial.h>
 
@@ -10,5 +9,6 @@ void setup(){
 
 void loop(){
     serial_read_data();
-    classifier_pos(pos_x,pos_y,class_ID);
+    servo_ctrl(pos_x,pos_y,class_ID);
+    print_system_info();
 }
