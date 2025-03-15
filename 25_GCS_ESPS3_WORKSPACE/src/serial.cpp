@@ -5,6 +5,7 @@
 uint8_t buffer[8];
 int bufferIndex = 0;
 
+int print_times=1;
 uint8_t frame_header_1 = 0x21;
 uint8_t frame_header_2 = 0x2c;
 uint8_t frame_foot = 0x5b;
@@ -43,6 +44,8 @@ void serial_read_data(void){
 }
 
 void print_system_info(void){
+    Serial0.print(print_times);
+    Serial0.print(".");
     Serial0.print("pos_x:");
     Serial0.print(pos_x);
     Serial0.print(" pos_y:");
@@ -50,7 +53,8 @@ void print_system_info(void){
     Serial0.print(" class_ID:");
     Serial0.print(class_ID);
     Serial0.print(" value:");
-    Serial0.print(value_cal(pos_x, pos_y, class_ID));
+    Serial0.print(value_cal(pos_x, pos_y,class_ID));
     Serial0.print(" delta_angle:");
-    Serial0.println(delta_angle(pos_x, pos_y, class_ID));
+    Serial0.println(delta_angle(pos_x, pos_y,class_ID));
+    print_times++;
 }

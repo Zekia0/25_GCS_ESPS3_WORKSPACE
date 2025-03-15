@@ -3,11 +3,21 @@
 #include "Servo_ctrl.h"
 
 #define PI 3.14
-Servo CLASSIFIER;
+#define CLASSIFIER_PIN 14
 
+#define recycled_pin 37
+#define kitch_pin 38
+#define waste_pin 39
+#define else_pin 40
+
+Servo CLASSIFIER;
+Servo RECYCLED;
+Servo KITCH;
+Servo WASTE;
+Servo ELSE;
 /*****************************************初始化参数********************************************/
-int pos_x_centre = 320;
-int pos_y_centre = 150;
+int pos_x_centre = 305;
+int pos_y_centre = 148;
 
 int angle_tar_recyclbled = 25;
 int angle_tar_kitch = 155;
@@ -22,15 +32,22 @@ int angle_tar_else = -125;
 // float clockwise_pid_kp_init = 0.2;
 // float clockwise_pid_kp = clockwise_pid_kp_init;
 /*****************************************一代算法参数********************************************/
+
+
+
 /*****************************************二代算法参数********************************************/
 
 float k_p = 0.5;
 int max_stop_value = 105;
 int min_stop_value = 75;
-int stop_value = 90;
 
 /*****************************************二代算法参数********************************************/
+
+
+
 /*****************************************初始化参数********************************************/
+
+
 /*****************************************转动盘舵机分类算法&&PID控制第一代********************************************/
 // void classifier_pos(int pos_x,int pos_y,int class_ID){
 //     if(class_ID = 2/*可回收垃圾*/){
@@ -82,9 +99,38 @@ int stop_value = 90;
 
 
 void servo_init(){
-    CLASSIFIER.attach(14);
+    CLASSIFIER.attach(CLASSIFIER_PIN);
+    RECYCLED.attach(recycled_pin);
+    KITCH.attach(kitch_pin);
+    WASTE.attach(waste_pin);
+    ELSE.attach(else_pin);
+}
+
+void cleaner_done(uint16_t class_ID){
+    if(class_ID == 2){
+        RECYCLED.write(0);
+        delay(3000);
+        RECYCLED.write(90);
+    }
+    if(class_ID == 3){
+        KITCH.write(180);
+        delay(3000);
+        KITCH.write(90);
+    }
+    if(class_ID == 4){
+        WASTE.write(180);
+        delay(3000);
+        WASTE.write(90);
+    }
+    if(class_ID == 5){
+        ELSE.write(0);
+        delay(3000);
+        ELSE.write(90); 
+    } 
 }
 /*****************************************转动盘舵机分类算法&&PID控制第一代********************************************/
+
+
 /*****************************************舵机算法第二代********************************************/
 int angle_cal_2(float pos_x,float pos_y){
     int delta_x = pos_x - pos_x_centre;
@@ -119,11 +165,26 @@ float value_cal(int posx,int posy,int tar_ID){
         return min_stop_value-abs(delta_angle(posx,posy,tar_ID)*k_p);
     }
     else{
-        return stop_value;
+        return 90;
+    }
+}
+
+bool servo_task_done(int posx,int posy,int tar_ID){
+    if(abs(delta_angle(posx,posy,tar_ID))<5){
+        return true;
+    }else{
+        return false;
     }
 }
 
 void servo_ctrl(int posx,int posy,int tar_ID){
     CLASSIFIER.write(value_cal(posx,posy,tar_ID));
 }
+
+void classifier_stop(void){
+    CLASSIFIER.write(90);
+}
 /*****************************************舵机算法第二代********************************************/
+
+
+/*****************************************分类舵机驱动**********************************************/
