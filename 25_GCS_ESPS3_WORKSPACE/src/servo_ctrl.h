@@ -12,5 +12,8 @@ float value_cal(int posx,int posy,int tar_ID);
 void cleaner_done(uint16_t class_ID);
 bool servo_task_done(int posx,int posy,int tar_ID);
 void classifier_stop(void);
+void F_init(void);
+void F_up(void);
+void F_down(void);
 
 #endif

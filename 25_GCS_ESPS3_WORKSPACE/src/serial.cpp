@@ -5,15 +5,21 @@
 uint8_t buffer[8];
 int bufferIndex = 0;
 
+int GPIO_PIN = 18;
+
 int print_times=1;
 uint8_t frame_header_1 = 0x21;
 uint8_t frame_header_2 = 0x2c;
 uint8_t frame_foot = 0x5b;
 
+uint8_t call_rest_frame = 0x55;
+uint8_t work_frame = 0xFF;
+
 uint16_t class_ID, pos_x, pos_y;
 
 void serial_init(void) {
-  Serial0.begin(115200);
+  pinMode(GPIO_PIN, OUTPUT);
+  digitalWrite(GPIO_PIN, HIGH);
   Serial2.begin(115200);
 }
 
@@ -41,6 +47,14 @@ void serial_read_data(void){
             }
         }
     }
+}
+
+void call_rest(void){
+    digitalWrite(GPIO_PIN, LOW);
+}
+
+void call_work(void){
+    digitalWrite(GPIO_PIN, HIGH);
 }
 
 void print_system_info(void){
