@@ -5,7 +5,7 @@
 #define pul_pin 35
 #define dir_pin 36
 #define pul_delay 50
-#define cirlcle 13
+#define cirlcle 12.5
 #define step_times 6400*cirlcle
 
 void motor_direction(bool dir){

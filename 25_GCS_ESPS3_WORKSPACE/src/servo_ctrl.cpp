@@ -16,13 +16,13 @@ Servo KITCH;
 Servo WASTE;
 Servo ELSE;
 /*****************************************初始化参数********************************************/
-int pos_x_centre = 305;
-int pos_y_centre = 148;
+int pos_x_centre = 280;
+int pos_y_centre = 200;
 
 int angle_tar_recyclbled = -35;
-int angle_tar_kitch = -5;
-int angle_tar_waste = -140;
-int angle_tar_else = -175;
+int angle_tar_kitch = 20;
+int angle_tar_waste = -145;
+int angle_tar_else = 160;
 
 float k_p = 0.5;
 int max_stop_value = 105;
@@ -101,10 +101,10 @@ int delta_angle(float pos_x,float pos_y,int tar_ID){
 }
 
 float value_cal(int posx,int posy,int tar_ID){
-    if(delta_angle(posx,posy,tar_ID) > 5){
+    if(delta_angle(posx,posy,tar_ID) > 2.5){
         return max_stop_value+abs(delta_angle(posx,posy,tar_ID)*k_p);
     }
-    else if(delta_angle(posx,posy,tar_ID) < -5){
+    else if(delta_angle(posx,posy,tar_ID) < -2.5){
         return min_stop_value-abs(delta_angle(posx,posy,tar_ID)*k_p);
     }
     else{
@@ -113,7 +113,7 @@ float value_cal(int posx,int posy,int tar_ID){
 }
 
 bool servo_task_done(int posx,int posy,int tar_ID){
-    if(abs(delta_angle(posx,posy,tar_ID))<5){
+    if(abs(delta_angle(posx,posy,tar_ID))<2.5){
         return true;
     }else{
         return false;
